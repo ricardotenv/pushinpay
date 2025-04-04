@@ -8,13 +8,15 @@ setup(
     long_description_content_type="text/markdown",
     author="Ricardo Santos",
     author_email="ricardotenv@gmail.com",
-    url="",
+    url="https://github.com/ricardotenv/pushinpay",  # Substitua pelo URL do repositório no GitHub
     packages=find_packages(),
     install_requires=["requests"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     python_requires=">=3.6",
 )
