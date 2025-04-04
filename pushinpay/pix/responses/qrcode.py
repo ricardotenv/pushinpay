@@ -31,6 +31,15 @@ class QRCodeResponse:
         self.webhook_url = webhook_url
         self.qr_code_base64 = qr_code_base64
 
+    def __str__(self) -> str:
+        """
+        Returns the string representation of the QRCodeResponse instance.
+
+        Returns:
+            str: The QR Code string.
+        """
+        return self.qr_code
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "QRCodeResponse":
         """
