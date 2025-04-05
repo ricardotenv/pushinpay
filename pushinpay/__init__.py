@@ -12,8 +12,9 @@ class PushinPay:
     """
 
     def __init__(self, api_key: str, webhook_url: Optional[str] = None, sandbox: bool = False) -> None:
+        self.sandbox = sandbox
         self._base_url: str = (
-            "https://api-sandbox.pushinpay.com.br/api" if sandbox else "https://api.pushinpay.com.br/api"
+            "https://api-sandbox.pushinpay.com.br/api" if self.sandbox else "https://api.pushinpay.com.br/api"
         )
         self.api_key: str = api_key
         self.webhook_url: Optional[str] = webhook_url
