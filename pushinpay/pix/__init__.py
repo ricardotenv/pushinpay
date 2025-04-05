@@ -1,6 +1,5 @@
 import requests
 from typing import Optional
-from pushinpay import PushinPay
 from pushinpay.pix.responses.qrcode import QRCodeResponse, QRCodeStatusResponse
 
 class Pix:
@@ -14,6 +13,7 @@ class Pix:
     """
 
     def __init__(self, pushinpay: "PushinPay") -> None:
+        from pushinpay import PushinPay
         self._pushinpay: PushinPay = pushinpay
         self._base_url: str = f"{pushinpay.base_url}/pix"
         self._headers: dict = pushinpay._headers()
