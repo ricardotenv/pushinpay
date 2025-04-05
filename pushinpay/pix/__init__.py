@@ -1,5 +1,5 @@
 import requests
-from typing import Optional
+from typing import Optional, List, Dict, Any
 from pushinpay.pix.responses.qrcode import QRCodeResponse, QRCodeStatusResponse
 
 class Pix:
@@ -18,25 +18,52 @@ class Pix:
         self._base_url: str = f"{pushinpay.base_url}/pix"
         self._headers: dict = pushinpay._headers()
 
-    def create_qrcode(self, value: int, webhook_url: Optional[str] = None) -> QRCodeResponse:
+    def create_qrcode(
+        self, 
+        value: int, 
+        webhook_url: Optional[str] = None, 
+        split_rules: Optional[List[Dict[str, Any]]] = None
+    ) -> QRCodeResponse:
         """
-        Creates a QR Code for Pix payment -> https://doc.pushinpay.com.br/#criar-qrcode-pix
-        This method generates a QR Code for a specified payment amount and optionally sets a webhook URL
-        for receiving notifications about the payment status.
+        Creates a QR Code for Pix payment with optional split rules. -> https://doc.pushinpay.com.br/#criar-qrcode-pix
 
         Args:
             value (int): The value of the payment in cents.
             webhook_url (Optional[str]): The webhook URL for receiving notifications. Defaults to None.
+            split_rules (Optional[List[Dict[str, Any]]]): A list of dictionaries defining split rules. 
+                Each dictionary must contain:
+                    - "value" (int): The value to split in cents.
+                    - "account_id" (str): The account ID to receive the split.
 
         Returns:
             QRCodeResponse: An instance of QRCodeResponse containing the QR Code details.
+
+        Raises:
+            ValueError: If split_rules is not in the correct format.
+            APIError: If the API returns an error.
         """
         if webhook_url is None:
             webhook_url = self._pushinpay.webhook_url
+
+        # Validate split_rules
+        if split_rules:
+            if not isinstance(split_rules, list):
+                raise ValueError("split_rules must be a list of dictionaries.")
+            for rule in split_rules:
+                if not isinstance(rule, dict) or "value" not in rule or "account_id" not in rule:
+                    raise ValueError(
+                        "Each split rule must be a dictionary with 'value' (int) and 'account_id' (str)."
+                    )
+                if not isinstance(rule["value"], int) or not isinstance(rule["account_id"], str):
+                    raise ValueError("'value' must be an int and 'account_id' must be a str.")
+
         url = f"{self._base_url}/cashIn"
         payload = {"value": value}
         if webhook_url:
             payload["webhook_url"] = webhook_url
+        if split_rules:
+            payload["split_rules"] = split_rules
+
         response = requests.post(url, json=payload, headers=self._headers)
         self._handle_errors(response)
         return QRCodeResponse.from_dict(response.json())

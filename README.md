@@ -36,9 +36,26 @@ Você pode criar um QR Code Pix para pagamentos:
 ```python
 # Criar um QR Code Pix
 qrcode = pushinpay.pix.create_qrcode(value=1000)  # Valor em centavos (R$10,00)
-print(qrcode)  # String do QR Code (__str__)
+print(qrcode)  # Código "copia e cola" do QR Code
 # Ou
-print(qrcode.qr_code)
+print(qrcode.qr_code) # Código "copia e cola" do QR Code
+```
+
+### Criar um QR Code Pix com regras de divisão (split)
+
+```python
+split_rules = [
+    {"value": 500, "account_id": "9C3AD98C-F00B-4729-BEAC-0A4B70B3A043"},
+    {"value": 1500, "account_id": "1A2B3C4D-5678-90EF-1234-567890ABCDEF"} 
+]
+
+qrcode = pushinpay.pix.create_qrcode(
+    value=2000, # Valor total em centavos (R$20,00)
+    webhook_url="http://meu-webhook.com",
+    split_rules=split_rules
+)
+
+print(qrcode) # Código "copia e cola" do QR Code
 ```
 
 ### Consultar Status de um QR Code Pix
