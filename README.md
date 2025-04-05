@@ -38,7 +38,7 @@ Você pode criar um QR Code Pix para pagamentos:
 qrcode = pushinpay.pix.create_qrcode(value=1000)  # Valor em centavos (R$10,00)
 print(qrcode)  # String do QR Code (__str__)
 # Ou
-print(qrcode.qrcode)
+print(qrcode.qr_code)
 ```
 
 ### Consultar Status de um QR Code Pix
