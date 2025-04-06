@@ -1,5 +1,5 @@
 import requests
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 from pushinpay.pix.responses.qrcode import QRCodeResponse, QRCodeStatusResponse
 
 class Pix:
@@ -68,22 +68,28 @@ class Pix:
         self._handle_errors(response)
         return QRCodeResponse.from_dict(response.json())
 
-    def get_status_qrcode(self, qrcode_response: QRCodeResponse) -> QRCodeStatusResponse:
+    def get_status_qrcode(self, qrcode_id: str) -> QRCodeStatusResponse:
         """
-        Updates the status of a QR Code within the QRCodeResponse object. -> https://doc.pushinpay.com.br/#consultar-status-de-qrcode-pix
-        This method retrieves the current status of a QR Code transaction using its ID and returns the updated status.
+        Retrieves the current status of a QR Code transaction using its ID. 
+        -> https://doc.pushinpay.com.br/#consultar-status-de-qrcode-pix
 
         Args:
-            qrcode_response (QRCodeResponse): The QRCodeResponse object to update.
+            qrcode_id str: The QR Code ID as a string.
 
         Returns:
             QRCodeStatusResponse: An instance of QRCodeStatusResponse containing the updated status.
+
+        Raises:
+            ValueError: If the provided qrcode is neither a string nor a QRCodeResponse instance.
         """
-        url = f"{self._pushinpay.base_url}/transactions/{qrcode_response.id}"
-        response = requests.get(url, headers=self._headers)
-        self._handle_errors(response)
-        status = qrcode_response.update_status_from_dict(response.json())
-        return status
+
+        if isinstance(qrcode_id, str):
+            url = f"{self._pushinpay.base_url}/transactions/{qrcode_id}"
+            response = requests.get(url, headers=self._headers)
+            self._handle_errors(response)
+            return QRCodeStatusResponse.from_dict(response.json())
+        else:
+            raise ValueError("qrcode_id must be a string (ID).")
 
     def _handle_errors(self, response: requests.Response) -> None:
         """

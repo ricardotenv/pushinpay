@@ -60,18 +60,6 @@ class QRCodeResponse:
             qr_code_base64=data.get("qr_code_base64"),
         )
 
-    def update_status_from_dict(self, data: Dict[str, Any]) -> "QRCodeStatusResponse":
-        """
-        Updates the status of the QR Code from a dictionary.
-
-        Args:
-            data (Dict[str, Any]): The dictionary containing the updated status data.
-
-        Returns:
-            QRCodeStatusResponse: An instance of QRCodeStatusResponse with the updated status.
-        """
-        return QRCodeStatusResponse.from_dict(data)
-
 
 class QRCodeStatusResponse:
     """
@@ -111,6 +99,15 @@ class QRCodeStatusResponse:
         self.updated_at = updated_at
         self.webhook_url = webhook_url
         self.pix_details = pix_details
+
+    def __str__(self) -> str:
+        """
+        Returns the string representation of the QRCodeStatusResponse instance.
+
+        Returns:
+            str: The status of the QR Code.
+        """
+        return self.status
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "QRCodeStatusResponse":

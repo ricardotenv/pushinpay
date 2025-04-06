@@ -63,12 +63,9 @@ print(qrcode) # Código "copia e cola" do QR Code
 Para consultar o status de um QR Code Pix:
 
 ```python
-# Consultar o status do QR Code
-qrcode_status = pushinpay.pix.get_status_qrcode(qrcode)
-print(qrcode_status)  # Uma instância de QRCodeResponseStatus
-print(qrcode_status.value) # 1000
-
-# Observação: qrcode.status é diferente de qrcode_status
+qrcode_status = pushinpay.pix.get_status_qrcode(qrcode.id)  # Passar o ID do QR Code
+print(qrcode_status)  # A representação em texto do atributo status
+print(qrcode_status.value)  # Valor do pagamento em centavos
 ```
 
 ## Tratamento de Erros
@@ -97,6 +94,16 @@ except APIError as e:
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests no repositório.
+
+## Testes
+
+Para executar os testes da biblioteca, utilize o seguinte comando:
+
+```bash
+python -m unittest discover tests
+```
+
+Certifique-se de que o módulo `unittest` está configurado corretamente no seu ambiente.
 
 ## Licença
 
