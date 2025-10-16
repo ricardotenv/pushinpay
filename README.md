@@ -2,7 +2,7 @@
 
 pushinpay é uma biblioteca Python para integração com a API do gateway de pagamento [PushinPay](https://pushinpay.com.br/), permitindo a criação e gerenciamento de pagamentos via Pix.
 
-Documentação oficial: https://doc.pushinpay.com.br/#introducao
+Documentação oficial: ~https://doc.pushinpay.com.br/#introducao~ https://app.theneo.io/pushinpay/pix/criar-pix
 
 ## Instalação
 
